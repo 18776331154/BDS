@@ -16,9 +16,10 @@
  int main(void)
  {		
  	u16 t;  
+	 u8 a;
 	u16 len;	
 	u16 times=0;
-	delay_init();	    	 //延时函数初始化	  
+	delay_init();	    	  
 	NVIC_PriorityGroupConfig(NVIC_PriorityGroup_2); //设置NVIC中断分组2:2位抢占优先级，2位响应优先级
 	uart_init(57600);	 //串口初始化为115200
  	LED_Init();			     //LED端口初始化
