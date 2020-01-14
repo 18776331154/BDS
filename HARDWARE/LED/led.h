@@ -13,6 +13,7 @@
 //Copyright(C) 广州市星翼电子科技有限公司 2009-2019
 //All rights reserved									  
 ////////////////////////////////////////////////////////////////////////////////// 
+#define LED2 PBout(6)// PB5
 #define LED0 PBout(5)// PB5
 #define LED1 PEout(5)// PE5	
 
