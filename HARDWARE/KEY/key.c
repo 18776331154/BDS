@@ -32,14 +32,7 @@ void KEY_Init(void) //IO初始化
 	GPIO_Init(GPIOA, &GPIO_InitStructure);//初始化GPIOA.0
 
 }
-//按键处理函数
-//返回按键值
-//mode:0,不支持连续按;1,支持连续按;
-//0，没有任何按键按下
-//1，KEY0按下
-//2，KEY1按下
-//3，KEY3按下 WK_UP
-//注意此函数有响应优先级,KEY0>KEY1>KEY_UP!!
+
 u8 KEY_Scan(u8 mode)
 {	 
 	static u8 key_up=1;//按键按松开标志
