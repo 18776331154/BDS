@@ -20,7 +20,7 @@
 	u16 times=0;
 	delay_init();	    	 //延时函数初始化	  
 	NVIC_PriorityGroupConfig(NVIC_PriorityGroup_2); //设置NVIC中断分组2:2位抢占优先级，2位响应优先级
-	uart_init(9600);	 //串口初始化为115200
+	uart_init(57600);	 //串口初始化为115200
  	LED_Init();			     //LED端口初始化
 	KEY_Init();          //初始化与按键连接的硬件接口
  	while(1)
