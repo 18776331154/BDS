@@ -1,2 +1,0 @@
-# BDS
-COMPITITION
