@@ -432,6 +432,25 @@ void GBZK_GPIO_Config(void)
 }
 
 
+/*Ð´Ö¸Áîµ½LCDÄ£¿é*/
+void transfer_command_lcd(int data1)   
+{
+	char i;
+	lcd_rs(0);;;
+	lcd_cs1(0);
+	for(i=0;i<8;i++)
+   {lcd_sclk(0);;;
+		
+		if(data1&0x80) {lcd_sid(1);;;}
+		else {lcd_sid(0);;;}
+		lcd_sclk(1);
+		__nop();;;
+	//	lcd_sclk(0);;;
+	 	data1<<=1;
+   }
+	 	lcd_rs(1);;;
+	 lcd_cs1(1);
+}
 
 
 
