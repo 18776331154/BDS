@@ -94,11 +94,6 @@ void Delay_50ms(unsigned int Del_50ms);
 void Delay_1ms(unsigned int Del_1ms);
 void fill_picture(unsigned char fill_Data);
 void Picture();
-void IIC_Start();
-void IIC_Stop();
-void Write_IIC_Command(unsigned char IIC_Command);
-void Write_IIC_Data(unsigned char IIC_Data);
-void Write_IIC_Byte(unsigned char IIC_Byte);
 
 void IIC_Wait_Ack();
 #endif  

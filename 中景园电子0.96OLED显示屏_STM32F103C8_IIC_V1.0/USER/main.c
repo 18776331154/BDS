@@ -33,7 +33,8 @@
 	
 	while(1) 
 	{		
-	
+		char a='2';
+		OLED_ShowChar(0,0,a,16);
 	}	  
 	
 }
