@@ -337,63 +337,99 @@ void OLED_DrawBMP(unsigned char x0, unsigned char y0,unsigned char x1, unsigned 
 } 
 
 //初始化SSD1306					    
-void OLED_Init(void)
-{ 	
- 
- 	 
+void initial_lcd(void)
+{
+	delay_ms(400);
+	//OLED_GPIO_Config();
+	GBZK_GPIO_Config();
+	lcd_cs1(0);
+	Rom_CS(1);
+       
+	transfer_command_lcd(0xAE);   //display off
+	transfer_command_lcd(0x20);	//Set Memory Addressing Mode	
+	transfer_command_lcd(0x10);	//00,Horizontal Addressing Mode;01,Vertical Addressing Mode;10,Page Addressing Mode (RESET);11,Invalid
+	transfer_command_lcd(0xb0);	//Set Page Start Address for Page Addressing Mode,0-7
+	transfer_command_lcd(0xc8);	//Set COM Output Scan Direction
+	transfer_command_lcd(0x00);//---set low column address
+	transfer_command_lcd(0x10);//---set high column address
+	transfer_command_lcd(0x40);//--set start line address
+	transfer_command_lcd(0x81);//--set contrast control register
+	transfer_command_lcd(0xFF);
+	transfer_command_lcd(0xa1);//--set segment re-map 0 to 127
+	transfer_command_lcd(0xa6);//--set normal display
+	transfer_command_lcd(0xa8);//--set multiplex ratio(1 to 64)
+	transfer_command_lcd(0x3F);//
+	transfer_command_lcd(0xa4);//0xa4,Output follows RAM content;0xa5,Output ignores RAM content
+	transfer_command_lcd(0xd3);//-set display offset
+	transfer_command_lcd(0x00);//-not offset
+	transfer_command_lcd(0xd5);//--set display clock divide ratio/oscillator frequency
+	transfer_command_lcd(0xf0);//--set divide ratio
+	transfer_command_lcd(0xd9);//--set pre-charge period
+	transfer_command_lcd(0x22); //
+	transfer_command_lcd(0xda);//--set com pins hardware configuration
+	transfer_command_lcd(0x12);
+	transfer_command_lcd(0xdb);//--set vcomh
+	transfer_command_lcd(0x20);//0x20,0.77xVcc
+	transfer_command_lcd(0x8d);//--set DC-DC enable
+	transfer_command_lcd(0x14);//
+	transfer_command_lcd(0xaf);//--turn on oled panel 
+	lcd_cs1(1);
+}
 
- 	 
- 	GPIO_InitTypeDef  GPIO_InitStructure;
- 	
-
-	RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOA, ENABLE);	 //使能A端口时钟
-	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_6|GPIO_Pin_7;	 
- 	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP; 		 //推挽输出
-	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;//速度50MHz
- 	GPIO_Init(GPIOA, &GPIO_InitStructure);	  //初始化GPIOD3,6
- 	GPIO_SetBits(GPIOA,GPIO_Pin_6|GPIO_Pin_7);	
 
 
-delay_ms(800);
-OLED_WR_Byte(0xAE,OLED_CMD);//--display off
-	OLED_WR_Byte(0x00,OLED_CMD);//---set low column address
-	OLED_WR_Byte(0x10,OLED_CMD);//---set high column address
-	OLED_WR_Byte(0x40,OLED_CMD);//--set start line address  
-	OLED_WR_Byte(0xB0,OLED_CMD);//--set page address
-	OLED_WR_Byte(0x81,OLED_CMD); // contract control
-	OLED_WR_Byte(0xFF,OLED_CMD);//--128   
-	OLED_WR_Byte(0xA1,OLED_CMD);//set segment remap 
-	OLED_WR_Byte(0xA6,OLED_CMD);//--normal / reverse
-	OLED_WR_Byte(0xA8,OLED_CMD);//--set multiplex ratio(1 to 64)
-	OLED_WR_Byte(0x3F,OLED_CMD);//--1/32 duty
-	OLED_WR_Byte(0xC8,OLED_CMD);//Com scan direction
-	OLED_WR_Byte(0xD3,OLED_CMD);//-set display offset
-	OLED_WR_Byte(0x00,OLED_CMD);//
+void GBZK_GPIO_Config(void)
+{		
+	/*定义一个GPIO_InitTypeDef类型的结构体*/
+	GPIO_InitTypeDef GPIO_InitStructure;
+
+	/*开启GPIOC的外设时钟*/
+	RCC_APB2PeriphClockCmd( RCC_APB2Periph_GPIOB, ENABLE); 
+
+	/*选择要控制的GPIOC引脚*/															   
+  	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_0 | GPIO_Pin_1 | GPIO_Pin_10 ;	
+
+	/*设置引脚模式为通用推挽输出*/
+  	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP;   
+
+	/*设置引脚速率为50MHz */   
+  	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz; 
+
+	/*调用库函数，初始化GPIOC*/
+  	GPIO_Init(GPIOB, &GPIO_InitStructure);		  
+
+	/* 关闭所有led灯	*/
+	GPIO_ResetBits(GPIOB,GPIO_Pin_0 | GPIO_Pin_1 | GPIO_Pin_10 );	 
+
+	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_10;
+	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP; 
+	GPIO_Init(GPIOB, &GPIO_InitStructure);
+	GPIO_ResetBits(GPIOB,GPIO_Pin_10 );
 	
-	OLED_WR_Byte(0xD5,OLED_CMD);//set osc division
-	OLED_WR_Byte(0x80,OLED_CMD);//
-	
-	OLED_WR_Byte(0xD8,OLED_CMD);//set area color mode off
-	OLED_WR_Byte(0x05,OLED_CMD);//
-	
-	OLED_WR_Byte(0xD9,OLED_CMD);//Set Pre-Charge Period
-	OLED_WR_Byte(0xF1,OLED_CMD);//
-	
-	OLED_WR_Byte(0xDA,OLED_CMD);//set com pin configuartion
-	OLED_WR_Byte(0x12,OLED_CMD);//
-	
-	OLED_WR_Byte(0xDB,OLED_CMD);//set Vcomh
-	OLED_WR_Byte(0x30,OLED_CMD);//
-	
-	OLED_WR_Byte(0x8D,OLED_CMD);//set charge pump enable
-	OLED_WR_Byte(0x14,OLED_CMD);//
-	
-	OLED_WR_Byte(0xAF,OLED_CMD);//--turn on oled panel
-}  
+		/*开启GPIOC的外设时钟*/
+	RCC_APB2PeriphClockCmd( RCC_APB2Periph_GPIOA, ENABLE); 
 
+	/*选择要控制的GPIOC引脚*/															   
+  	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_4 | GPIO_Pin_5 | GPIO_Pin_7 ;	
 
+	/*设置引脚模式为通用推挽输出*/
+  	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP;   
 
+	/*设置引脚速率为50MHz */   
+  	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz; 
 
+	/*调用库函数，初始化GPIOC*/
+  	GPIO_Init(GPIOA, &GPIO_InitStructure);		  
+
+	/* 关闭所有led灯	*/
+	GPIO_ResetBits(GPIOB,GPIO_Pin_4 | GPIO_Pin_5 | GPIO_Pin_7 );	 
+
+	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_4;
+	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP; 
+	GPIO_Init(GPIOA, &GPIO_InitStructure);
+	GPIO_ResetBits(GPIOA,GPIO_Pin_4 );
+	
+}
 
 
 

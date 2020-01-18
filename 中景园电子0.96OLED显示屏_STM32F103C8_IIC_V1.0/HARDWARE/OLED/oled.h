@@ -34,11 +34,39 @@
 #define Y_WIDTH 	64	    						  
 //-----------------OLED IIC端口定义----------------  					   
 
-#define OLED_SCLK_Clr() GPIO_ResetBits(GPIOA,GPIO_Pin_6)//SCL
-#define OLED_SCLK_Set() GPIO_SetBits(GPIOA,GPIO_Pin_6)
+//带参宏，可以像内联函数一样使用
+#define lcd_cs1(a)	if (a)	\
+					GPIO_SetBits(GPIOB,GPIO_Pin_1);\
+					else		\
+					GPIO_ResetBits(GPIOB,GPIO_Pin_1)
 
-#define OLED_SDIN_Clr() GPIO_ResetBits(GPIOA,GPIO_Pin_7)//SDA
-#define OLED_SDIN_Set() GPIO_SetBits(GPIOA,GPIO_Pin_7)
+#define lcd_rs(a)	if (a)	\
+					GPIO_SetBits(GPIOB,GPIO_Pin_0);\
+					else		\
+					GPIO_ResetBits(GPIOB,GPIO_Pin_0)
+
+
+#define lcd_sid(a)	if (a)	\
+					GPIO_SetBits(GPIOA,GPIO_Pin_7);\
+					else		\
+					GPIO_ResetBits(GPIOA,GPIO_Pin_7)
+
+#define lcd_sclk(a)	if (a)	\
+					GPIO_SetBits(GPIOA,GPIO_Pin_5);\
+					else		\
+					GPIO_ResetBits(GPIOA,GPIO_Pin_5)
+#define Rom_CS(a)	if (a)	\
+					GPIO_SetBits(GPIOB,GPIO_Pin_10);\
+					else		\
+					GPIO_ResetBits(GPIOB,GPIO_Pin_10)
+
+#define Rom_OUT(a)	if (a)	\
+					GPIO_SetBits(GPIOA,GPIO_Pin_4);\
+					else		\
+					GPIO_ResetBits(GPIOA,GPIO_Pin_4)
+
+
+#define ROM_OUT    GPIO_ReadInputDataBit(GPIOA,GPIO_Pin_4)
 
  		     
 #define OLED_CMD  0	//写命令
@@ -49,7 +77,8 @@
 void OLED_WR_Byte(unsigned dat,unsigned cmd);  
 void OLED_Display_On(void);
 void OLED_Display_Off(void);	   							   		    
-void OLED_Init(void);
+void initial_lcd(void);
+void GBZK_GPIO_Config(void);
 void OLED_Clear(void);
 void OLED_DrawPoint(u8 x,u8 y,u8 t);
 void OLED_Fill(u8 x1,u8 y1,u8 x2,u8 y2,u8 dot);
