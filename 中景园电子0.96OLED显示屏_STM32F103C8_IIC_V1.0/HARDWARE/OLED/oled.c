@@ -212,14 +212,21 @@ void OLED_Display_Off(void)
 //清屏函数,清完屏,整个屏幕是黑色的!和没点亮一样!!!	  
 void OLED_Clear(void)  
 {  
-	u8 i,n;		    
-	for(i=0;i<8;i++)  
-	{  
-		OLED_WR_Byte (0xb0+i,OLED_CMD);    //设置页地址（0~7）
-		OLED_WR_Byte (0x00,OLED_CMD);      //设置显示位置—列低地址
-		OLED_WR_Byte (0x10,OLED_CMD);      //设置显示位置—列高地址   
-		for(n=0;n<128;n++)OLED_WR_Byte(0,OLED_DATA); 
-	} //更新显示
+	unsigned char i,j;
+	lcd_cs1(0);
+	Rom_CS(1);	
+	for(i=0;i<8;i++)
+	{
+		transfer_command_lcd(0xb0+i);
+		transfer_command_lcd(0x00);
+		transfer_command_lcd(0x10);
+		for(j=0;j<128;j++)
+		{
+		  	transfer_data_lcd(0x00);
+		}
+	}
+ 	lcd_cs1(1);
+
 }
 void OLED_On(void)  
 {  
