@@ -25,9 +25,9 @@
 #include "oled.h"
 #include "bmp.h"
 
-
-
-
+int num=0;
+char a='a';
+char string[100] = "$GNGGA,095528.000,2318.1133,N,11319.7210,E,1,06";
  int main(void)
   {
 		delay_init();	    	 //延时函数初始化	  
@@ -37,10 +37,15 @@
 	
 	while(1) 
 	{		
-		char a='2';
-		OLED_ShowChar(0,0,a,16);
-		display_graphic_16x16(6,97,jiong1);	
-//		OLED_ShowNum(0,0,23,2,16);
+		num++;
+		if(num==10000)num=0;
+		OLED_ShowChar(3,0,a,16);
+		OLED_ShowNum(20,0,num,5,16);
+		OLED_ShowCHinese(70,0,0);
+		OLED_ShowCHinese(86,0,1);
+		OLED_ShowCHinese(102,0,2);
+		OLED_ShowString(0,2,string,16);
+
 	}	  
 	
 }
