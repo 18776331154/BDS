@@ -74,7 +74,7 @@
 
 
 //OLED¿ØÖÆÓÃº¯Êý
-void OLED_WR_Byte(unsigned dat,unsigned cmd);  
+void OLED_WR_Byte(unsigned int dat,unsigned int cmd);  
 void OLED_Display_On(void);
 void OLED_Display_Off(void);	   							   		    
 void initial_lcd(void);
@@ -94,8 +94,13 @@ void Delay_50ms(unsigned int Del_50ms);
 void Delay_1ms(unsigned int Del_1ms);
 void fill_picture(unsigned char fill_Data);
 void Picture();
-
+void display_graphic_16x16(int page,int column,const char *dp);
+void lcd_address(char page,char column);
 void IIC_Wait_Ack();
+
+
+
+
 #endif  
 	 
 

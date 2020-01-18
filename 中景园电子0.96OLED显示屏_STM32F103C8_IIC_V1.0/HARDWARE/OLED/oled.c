@@ -40,7 +40,7 @@
 //IIC Start
 **********************************************/
 
-void OLED_WR_Byte(unsigned dat,unsigned cmd)
+void OLED_WR_Byte(unsigned int dat,unsigned int cmd)
 {
 	if(cmd)
 		{
@@ -387,8 +387,31 @@ void transfer_data_lcd(int data1)
 
 
 
+/*??¨º?16x16¦Ì??¨®¨ª????¡éoo¡Á??¡é¨¦¨²?¡ì¡Á??¨°16x16¦Ì??¨®¦Ì?????¨ª?¡À¨º*/
+void display_graphic_16x16(int page,int column,const char *dp)
+{
+	int i,j;
+ 	lcd_cs1(0);
+	Rom_CS(1); 	
+	for(j=2;j>0;j--)
+	{
+		lcd_address(column,page);
+		for (i=0;i<16;i++)
+		{	
+			transfer_data_lcd(*dp);					/*D¡ä¨ºy?Y¦Ì?LCD,??D¡ä¨ª¨º¨°???8??¦Ì?¨ºy?Yo¨®¨¢D¦Ì??¡¤¡Á??¡¥?¨®1*/
+			dp++;
+		}
+		page++;
+	}
+	lcd_cs1(1);
+}
+void lcd_address(char page,char column)
+{
 
-
+	transfer_command_lcd(0xb0 + column);   /*¨¦¨¨??¨°3¦Ì??¡¤*/
+	transfer_command_lcd(((page & 0xf0) >> 4) | 0x10);	/*¨¦¨¨??¨¢D¦Ì??¡¤¦Ì???4??*/
+	transfer_command_lcd((page & 0x0f) | 0x00);	/*¨¦¨¨??¨¢D¦Ì??¡¤¦Ì?¦Ì¨ª4??*/	
+}
 
 
 

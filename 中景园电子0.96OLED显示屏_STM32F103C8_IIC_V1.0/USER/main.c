@@ -24,6 +24,10 @@
 #include "sys.h"
 #include "oled.h"
 #include "bmp.h"
+
+
+
+
  int main(void)
   {
 		delay_init();	    	 //延时函数初始化	  
@@ -35,6 +39,8 @@
 	{		
 		char a='2';
 		OLED_ShowChar(0,0,a,16);
+		display_graphic_16x16(6,97,jiong1);	
+//		OLED_ShowNum(0,0,23,2,16);
 	}	  
 	
 }
