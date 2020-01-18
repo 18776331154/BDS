@@ -459,7 +459,24 @@ void transfer_command_lcd(int data1)
 	 lcd_cs1(1);
 }
 
-
+/*写数据到LCD模块*/
+void transfer_data_lcd(int data1)
+{
+	char i;
+	lcd_rs(1);;;
+	lcd_cs1(0);
+	for(i=0;i<8;i++)
+   {
+		lcd_sclk(0);;;
+		if(data1&0x80) {lcd_sid(1);;;}
+		else {lcd_sid(0);;;}
+		lcd_sclk(1);;;
+		__nop();;;
+		//lcd_sclk(0);;;
+	 	data1<<=1;
+   }lcd_rs(1);;;
+	 lcd_cs1(1);
+}
 
 
 

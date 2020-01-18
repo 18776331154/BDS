@@ -80,6 +80,7 @@ void OLED_Display_Off(void);
 void initial_lcd(void);
 void GBZK_GPIO_Config(void);
 void transfer_command_lcd(int data1);
+void transfer_data_lcd(int data1);
 void OLED_Clear(void);
 void OLED_DrawPoint(u8 x,u8 y,u8 t);
 void OLED_Fill(u8 x1,u8 y1,u8 x2,u8 y2,u8 dot);
