@@ -44,11 +44,12 @@ void OLED_WR_Byte(unsigned int dat,unsigned int cmd)
 {
 	if(cmd)
 		{
-			transfer_command_lcd(dat); 
+			transfer_data_lcd(dat);				
+
 		}
 	else 
 		{
-			transfer_data_lcd(dat);	
+			transfer_command_lcd(dat); 
 		}
 
 
@@ -143,32 +144,7 @@ void OLED_On(void)
 		for(n=0;n<128;n++)OLED_WR_Byte(1,OLED_DATA); 
 	} //更新显示
 }
-//在指定位置显示一个字符,包括部分字符
-//x:0~127
-//y:0~63
-//mode:0,反白显示;1,正常显示				 
-//size:选择字体 16/12 
-void OLED_ShowChar(u8 x,u8 y,u8 chr,u8 Char_Size)
-{      	
-	unsigned char c=0,i=0;	
-		c=chr-' ';//得到偏移后的值			
-		if(x>Max_Column-1){x=0;y=y+2;}
-		if(Char_Size ==16)
-			{
-			OLED_Set_Pos(x,y);	
-			for(i=0;i<8;i++)
-			OLED_WR_Byte(F8X16[c*16+i],OLED_DATA);
-			OLED_Set_Pos(x,y+1);
-			for(i=0;i<8;i++)
-			OLED_WR_Byte(F8X16[c*16+i+8],OLED_DATA);
-			}
-			else {	
-				OLED_Set_Pos(x,y);
-				for(i=0;i<6;i++)
-				OLED_WR_Byte(F6x8[c][i],OLED_DATA);
-				
-			}
-}
+
 //m^n函数
 u32 oled_pow(u8 m,u8 n)
 {
@@ -384,10 +360,34 @@ void transfer_data_lcd(int data1)
 
 
 
+//在指定位置显示一个字符,包括部分字符
+//x:0~127
+//y:0~63
+//mode:0,反白显示;1,正常显示				 
+//size:选择字体 16/12 
+void OLED_ShowChar(u8 x,u8 y,u8 chr,u8 Char_Size)
+{      	
+	unsigned char c=0,i=0;	
+		c=chr-' ';//得到偏移后的值			
+		if(x>Max_Column-1){x=0;y=y+2;}
+		if(Char_Size ==16)
+			{
+			OLED_Set_Pos(x,y);	
+			for(i=0;i<8;i++)
+			OLED_WR_Byte(F8X16[c*16+i],OLED_DATA);
+			OLED_Set_Pos(x,y+1);
+			for(i=0;i<8;i++)
+			OLED_WR_Byte(F8X16[c*16+i+8],OLED_DATA);
+			}
+			else {	
+				OLED_Set_Pos(x,y);
+				for(i=0;i<6;i++)
+				OLED_WR_Byte(F6x8[c][i],OLED_DATA);
+				
+			}
+}
 
 
-
-/*??ê?16x16μ??óí????￠oo×??￠éú?§×??ò16x16μ??óμ?????í?±ê*/
 void display_graphic_16x16(int page,int column,const char *dp)
 {
 	int i,j;
@@ -412,9 +412,6 @@ void lcd_address(char page,char column)
 	transfer_command_lcd(((page & 0xf0) >> 4) | 0x10);	/*éè??áDμ??·μ???4??*/
 	transfer_command_lcd((page & 0x0f) | 0x00);	/*éè??áDμ??·μ?μí4??*/	
 }
-
-
-
 
 
 
